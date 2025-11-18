@@ -11,7 +11,7 @@ const defaultTRenderEngine = {} as any;
 const TRenderEngineContext =
   React.createContext<TRenderEngine>(defaultTRenderEngine);
 
-export const tRenderEngineProviderPropTypes: Record<
+export const tRenderEngineProviderPropTypes: Record
   keyof TRenderEngineConfig,
   any
 > = {
@@ -95,10 +95,8 @@ export function useAmbientTRenderEngine() {
  *
  * @param props - Pass engine config here.
  */
-export default function TRenderEngineProvider({
-  children,
-  ...config
-}: PropsWithChildren<TRenderEngineConfig>): ReactElement {
+export default function TRenderEngineProvider(props: PropsWithChildren<TRenderEngineConfig>): ReactElement {
+  const { children, ...config } = { ...defaultTRenderEngineProviderProps, ...props };
   const engine = useTRenderEngine(config);
   return (
     <TRenderEngineContext.Provider value={engine}>
@@ -106,11 +104,6 @@ export default function TRenderEngineProvider({
     </TRenderEngineContext.Provider>
   );
 }
-
-/**
- * @ignore
- */
-TRenderEngineProvider.defaultProps = defaultTRenderEngineProviderProps;
 
 /**
  * @ignore

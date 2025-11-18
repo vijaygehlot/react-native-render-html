@@ -2,23 +2,20 @@ import { FunctionComponent } from 'react';
 import { TChildrenRendererProps } from './shared-types';
 import renderChildren from './renderChildren';
 
-/**
- * A component to render collections of tnodes.
- * Especially useful when used with {@link useTNodeChildrenProps}.
- */
-const TChildrenRenderer: FunctionComponent<TChildrenRendererProps> =
-  renderChildren.bind(null);
 
-export const tchildrenRendererDefaultProps: Pick<
-  TChildrenRendererProps,
-  'propsForChildren'
+export const tchildrenRendererDefaultProps: Pick
+    TChildrenRendererProps,
+    'propsForChildren'
 > = {
   propsForChildren: {}
 };
 
 /**
- * @ignore
+ * A component to render collections of tnodes.
+ * Especially useful when used with {@link useTNodeChildrenProps}.
  */
-TChildrenRenderer.defaultProps = tchildrenRendererDefaultProps;
+const TChildrenRenderer: FunctionComponent<TChildrenRendererProps> = (props) =>
+    renderChildren({ ...tchildrenRendererDefaultProps, ...props });
+
 
 export default TChildrenRenderer;

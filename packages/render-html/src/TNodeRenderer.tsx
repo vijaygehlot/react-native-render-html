@@ -38,12 +38,20 @@ function isGhostTNode(tnode: TNode) {
   );
 }
 
+const defaultProps: Required<Pick<TNodeRendererProps<any>, 'propsFromParent'>> =
+    {
+      propsFromParent: {
+        collapsedMarginTop: null
+      }
+    };
+
 /**
  * A component to render any {@link TNode}.
  */
 const TNodeRenderer = memo(function MemoizedTNodeRenderer(
-  props: TNodeRendererProps<any>
+  propsInp: TNodeRendererProps<any>
 ): ReactElement | null {
+  const props = {  ...defaultProps, ...propsInp };
   const { tnode } = props;
   const sharedProps = useSharedProps();
   const renderRegistry = useRendererRegistry();
@@ -120,15 +128,6 @@ const TNodeRenderer = memo(function MemoizedTNodeRenderer(
     : React.createElement(Renderer as any, assembledProps);
 });
 
-const defaultProps: Required<Pick<TNodeRendererProps<any>, 'propsFromParent'>> =
-  {
-    propsFromParent: {
-      collapsedMarginTop: null
-    }
-  };
-
-// @ts-expect-error default props must be defined
-TNodeRenderer.defaultProps = defaultProps;
 
 export {
   TDefaultBlockRenderer,

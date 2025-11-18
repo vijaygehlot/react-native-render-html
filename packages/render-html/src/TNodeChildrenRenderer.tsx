@@ -61,21 +61,20 @@ export function useTNodeChildrenProps({
  * A component to render all children of a {@link TNode}.
  */
 function TNodeChildrenRenderer(
-  props: TNodeChildrenRendererProps
+    propsInp: TNodeChildrenRendererProps
 ): ReactElement {
+  const props = {  ...tchildrenRendererDefaultProps, ...propsInp };
+
   if (props.tnode.type === 'text') {
     // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20544
     return props.tnode.data as unknown as ReactElement;
   }
-  // A tnode type will never change. We can safely
-  // ignore the non-conditional rule of hooks.
-  // eslint-disable-next-line react-hooks/rules-of-hooks
+  if (props.tnode.type === 'phrasing') {
+    return renderTextualContent(props);
+  }
   return renderChildren(useTNodeChildrenProps(props));
 }
 
-/**
- * @ignore
- */
-TNodeChildrenRenderer.defaultProps = tchildrenRendererDefaultProps;
+
 
 export default TNodeChildrenRenderer;

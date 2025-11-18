@@ -14,6 +14,13 @@ function identity(arg: any) {
   return arg;
 }
 
+const defaultProps = {
+  enableExperimentalPercentWidth: false,
+  computeMaxWidth: identity,
+  imagesInitialDimensions: defaultImageInitialDimensions,
+  style: {}
+};
+
 /**
  * A component to render images based on an internal loading state.
  *
@@ -23,7 +30,8 @@ function identity(arg: any) {
  * {@link IMGElementContentSuccess}, {@link IMGElementContentLoading}
  * and {@link IMGElementContentError} for customization.
  */
-function IMGElement(props: IMGElementProps): ReactElement {
+function IMGElement(propsInp: IMGElementProps): ReactElement {
+  const props = { ...defaultProps, ...propsInp };
   const state = useIMGElementState(props);
   let content: ReactNode;
   if (state.type === 'success') {
@@ -71,15 +79,5 @@ const propTypes: Record<keyof IMGElementProps, any> = {
  * @ignore
  */
 IMGElement.propTypes = propTypes;
-
-/**
- * @ignore
- */
-IMGElement.defaultProps = {
-  enableExperimentalPercentWidth: false,
-  computeMaxWidth: identity,
-  imagesInitialDimensions: defaultImageInitialDimensions,
-  style: {}
-};
 
 export default IMGElement;
