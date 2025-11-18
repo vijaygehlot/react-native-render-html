@@ -51,7 +51,7 @@ const defaultProps: Required<Pick<TNodeRendererProps<any>, 'propsFromParent'>> =
 const TNodeRenderer = memo(function MemoizedTNodeRenderer(
   propsInp: TNodeRendererProps<any>
 ): ReactElement | null {
-  const props = {  ...defaultProps, ...propsInp };
+  const props = { ...propsInp, propsFromParent: propsInp.propsFromParent ?? defaultProps.propsFromParent };
   const { tnode } = props;
   const sharedProps = useSharedProps();
   const renderRegistry = useRendererRegistry();

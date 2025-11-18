@@ -64,7 +64,7 @@ export function useTNodeChildrenProps({
 function TNodeChildrenRenderer(
     propsInp: TNodeChildrenRendererProps
 ): ReactElement {
-  const props = {  ...tchildrenRendererDefaultProps, ...propsInp };
+  const props = { ...propsInp, propsForChildren: propsInp.propsForChildren ?? tchildrenRendererDefaultProps.propsForChildren };
 
   if (props.tnode.type === 'text') {
     // see https://github.com/DefinitelyTyped/DefinitelyTyped/issues/20544
