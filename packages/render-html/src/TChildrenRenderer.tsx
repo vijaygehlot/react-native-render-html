@@ -3,8 +3,7 @@ import { TChildrenRendererProps } from './shared-types';
 import renderChildren from './renderChildren';
 
 
-export const tchildrenRendererDefaultProps: Pick
-    TChildrenRendererProps,
+export const tchildrenRendererDefaultProps: Pick<TChildrenRendererProps,
     'propsForChildren'
 > = {
   propsForChildren: {}
@@ -14,7 +13,7 @@ export const tchildrenRendererDefaultProps: Pick
  * A component to render collections of tnodes.
  * Especially useful when used with {@link useTNodeChildrenProps}.
  */
-const TChildrenRenderer: FunctionComponent<TChildrenRendererProps> = (props) =>
+const TChildrenRenderer: FunctionComponent<TChildrenRendererProps> = (props:any) =>
     renderChildren({ ...tchildrenRendererDefaultProps, ...props });
 
 

@@ -11,7 +11,7 @@ const defaultTRenderEngine = {} as any;
 const TRenderEngineContext =
   React.createContext<TRenderEngine>(defaultTRenderEngine);
 
-export const tRenderEngineProviderPropTypes: Record
+export const tRenderEngineProviderPropTypes: Record<
   keyof TRenderEngineConfig,
   any
 > = {
