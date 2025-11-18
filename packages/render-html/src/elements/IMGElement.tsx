@@ -64,7 +64,7 @@ const propTypes: Record<keyof IMGElementProps, any> = {
   height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.array]),
-  computeMaxWidth: PropTypes.func.isRequired,
+  computeMaxWidth: PropTypes.func,
   contentWidth: PropTypes.number,
   enableExperimentalPercentWidth: PropTypes.bool,
   initialDimensions: imgDimensionsType,

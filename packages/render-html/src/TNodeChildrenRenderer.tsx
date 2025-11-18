@@ -7,6 +7,7 @@ import {
   TNodeChildrenRendererProps
 } from './shared-types';
 import renderChildren from './renderChildren';
+import renderTextualContent from './renderTextualContent';
 
 function isCollapsible(tnode: TNode) {
   return tnode.type === 'block' || tnode.type === 'phrasing';
@@ -70,11 +71,9 @@ function TNodeChildrenRenderer(
     return props.tnode.data as unknown as ReactElement;
   }
   if (props.tnode.type === 'phrasing') {
-    return renderTextualContent(props);
+    return renderTextualContent(useTNodeChildrenProps(props));
   }
   return renderChildren(useTNodeChildrenProps(props));
 }
-
-
 
 export default TNodeChildrenRenderer;

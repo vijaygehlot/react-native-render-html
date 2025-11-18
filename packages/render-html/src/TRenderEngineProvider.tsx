@@ -15,19 +15,19 @@ export const tRenderEngineProviderPropTypes: Record<
   keyof TRenderEngineConfig,
   any
 > = {
-  customHTMLElementModels: PropTypes.object.isRequired,
+  customHTMLElementModels: PropTypes.object,
   enableCSSInlineProcessing: PropTypes.bool,
   enableUserAgentStyles: PropTypes.bool,
   idsStyles: PropTypes.object,
   ignoredDomTags: PropTypes.array,
   ignoreDomNode: PropTypes.func,
   domVisitors: PropTypes.object,
-  ignoredStyles: PropTypes.array.isRequired,
+  ignoredStyles: PropTypes.array,
   allowedStyles: PropTypes.array,
   htmlParserOptions: PropTypes.object,
   tagsStyles: PropTypes.object,
   classesStyles: PropTypes.object,
-  emSize: PropTypes.number.isRequired,
+  emSize: PropTypes.number,
   baseStyle: PropTypes.object,
   systemFonts: PropTypes.arrayOf(PropTypes.string),
   fallbackFonts: PropTypes.shape({
