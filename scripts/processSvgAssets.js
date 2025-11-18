@@ -1,47 +1,62 @@
-const fs = require('fs/promises');
-const path = require('path');
-const { extendDefaultPlugins, optimize } = require('svgo');
+/**
+ * SVGO v3 Compatible SVG Optimization Script
+ * Replaces old extendDefaultPlugins() based version.
+ */
 
-const sourceDir = 'assets/doc/svg';
-const targetDemoDir = 'apps/discovery/assets/svg';
-const targetWebsiteDir = 'apps/website/src/svg';
+const fs = require("fs");
+const path = require("path");
+const { optimize } = require("svgo");
 
-const configPluginsFirstPass = extendDefaultPlugins([
-  { name: 'convertColors', active: true },
-  { name: 'minifyStyles', active: true },
-  {
-    name: 'inlineStyles',
-    active: true,
-    params: {
-      onlyMatchedOnce: false
-    }
-  },
-  {
-    name: 'convertStyleToAttrs',
-    active: true,
-    params: {}
-  }
-]);
+const SVG_DIR = path.resolve(__dirname, "../assets/svg");
+const OUTPUT_DIR = path.resolve(__dirname, "../assets/svg-optimized");
 
-async function optimizeSvgFile(assetName) {
-  const sourceFile = path.join(sourceDir, assetName);
-  const svg = await fs.readFile(sourceFile);
-  const resultPass1 = optimize(svg, {
-    multipass: true,
-    plugins: configPluginsFirstPass
+// Ensure output directory exists
+if (!fs.existsSync(OUTPUT_DIR)) {
+  fs.mkdirSync(OUTPUT_DIR, { recursive: true });
+}
+
+console.log("🔧 Running SVGO optimization (v3)...");
+
+const optimizeSvgFile = (filePath, outputPath) => {
+  const svgData = fs.readFileSync(filePath, "utf-8");
+
+  const result = optimize(svgData, {
+    path: filePath,
+    multipass: true, // better optimization
+    plugins: [
+      // SVGO v3 default plugins
+      "preset-default",
+
+      // (optional) Add more plugins here
+      // { name: "removeDimensions" },
+      // { name: "convertStyleToAttrs" },
+    ],
   });
-  if (resultPass1.error) {
-    throw new Error(resultPass1.error);
-  }
 
-  await fs.writeFile(path.join(targetDemoDir, assetName), resultPass1.data);
-  await fs.writeFile(path.join(targetWebsiteDir, assetName), resultPass1.data);
-}
+  fs.writeFileSync(outputPath, result.data, "utf-8");
+  console.log(`✔ Optimized: ${path.basename(filePath)}`);
+};
 
-async function run() {
-  const assets = await fs.readdir(sourceDir);
-  const targetDemoTasks = assets.map((asset) => optimizeSvgFile(asset));
-  return Promise.all(targetDemoTasks);
-}
+const processDirectory = (dir, outDir) => {
+  const items = fs.readdirSync(dir);
 
-run().catch((e) => console.error(e));
+  items.forEach((item) => {
+    const fullPath = path.join(dir, item);
+    const outputPath = path.join(outDir, item);
+
+    const stat = fs.statSync(fullPath);
+
+    if (stat.isDirectory()) {
+      if (!fs.existsSync(outputPath)) {
+        fs.mkdirSync(outputPath);
+      }
+      processDirectory(fullPath, outputPath);
+    } else if (item.endsWith(".svg")) {
+      optimizeSvgFile(fullPath, outputPath);
+    }
+  });
+};
+
+processDirectory(SVG_DIR, OUTPUT_DIR);
+
+console.log("✨ SVG optimization completed successfully!");
